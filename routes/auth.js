@@ -13,7 +13,7 @@ router.post('/signin', userSigninValidator, runValidation, signin);
 router.get('/signout', signout);
 router.put('/forgot-password', forgotPasswordValidator, runValidation, forgotPassword);
 router.put('/reset-password', resetPasswordValidator, runValidation, resetPassword);
-router.post('/createTempProfilePhoto',requireSignin, adminMiddleware, tempPhoto);
+router.post('/createTempProfilePhoto', tempPhoto);
 router.get('/getTempProfilePhoto', getTempPhoto);
 
 
