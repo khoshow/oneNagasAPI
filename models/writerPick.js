@@ -28,8 +28,8 @@ const writerPickSchema = new mongoose.Schema(
         about: {
             type: String
         }
-        // ,
-        //  expire_at: { type: Date, default: Date.now, expires: 5000 }
+        ,
+         expire_at: { type: Date, default: Date.now, expires: "5m" }
        
     },
     { timestamp: true }

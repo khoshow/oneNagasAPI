@@ -23,8 +23,14 @@ const app = express();
 app.use(express.static(__dirname + '/public'));
 
 // db
+let productionOrDevelopment;
+if(process.env.NODE_ENV==="production"){
+    productionOrDevelopment = process.env.DATABASE_CLOUD
+}else if(process.env.NODE_ENV==="development"){
+    productionOrDevelopment = process.env.DATABASE_LOCAL
+}
 mongoose
-    .connect(process.env.DATABASE_CLOUD)
+    .connect(productionOrDevelopment)
     .then(() => console.log('DB connected'))
     .catch(err => {
         console.log(err);
@@ -52,7 +58,7 @@ app.use('/api', commentRoutes)
 app.use('/api', replyRoutes)
 
 // port
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 8020;
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
