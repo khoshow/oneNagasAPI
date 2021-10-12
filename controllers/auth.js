@@ -81,8 +81,8 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 // };
 
 exports.preSignup = (req, res) => {
-  const { name, email, password, photo } = req.body;
-  console.log("From back" + photo);
+  const { name, email, password } = req.body;
+
   User.findOne({ email: email.toLowerCase() }, (err, user) => {
     if (user) {
       return res.status(400).json({
@@ -90,7 +90,7 @@ exports.preSignup = (req, res) => {
       });
     }
     const token = jwt.sign(
-      { name, email, password, photo },
+      { name, email, password },
       process.env.JWT_ACCOUNT_ACTIVATION,
       {
         expiresIn: "10m",
@@ -102,10 +102,10 @@ exports.preSignup = (req, res) => {
       subject: `Account activation link`,
       html: `
     <p>Please use the following link to activate your acccount:</p>
-    <p>${process.env.CLIENT_URL}/auth/account/activate/${token}</p>
+    <a href={${process.env.CLIENT_URL}/auth/account/activate/${token}}>${process.env.CLIENT_URL}/auth/account/activate/${token}</a>
     <hr />
-    <p>This email may contain sensetive information<p>
-    <p>https://wenagas.com</p>
+    <p>This email may contain sensitive information<p>
+    <p>https://nagamei.com</p>
     `,
     };
 
@@ -113,7 +113,7 @@ exports.preSignup = (req, res) => {
       .send(emailData)
       .then((sent) => {
         return res.json({
-          message: `Email has been sent to ${email}. Follow the instructions to activate your account.`,
+          message: `Activation link has been sent to ${email}. Please follow the instructions to activate your account.`,
         });
       })
       .catch((error) => {

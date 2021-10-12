@@ -32,7 +32,7 @@ if(process.env.NODE_ENV=="production"){
 
 mongoose
     .connect(productionOrDevelopment)
-    .then(() => console.log("DB: "+productionOrDevelopment))
+    .then(() => console.log("DB Connected "))
     .catch(err => {
         console.log(err);
     });
