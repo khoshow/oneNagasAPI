@@ -7,7 +7,7 @@ const {forgotPasswordValidator, resetPasswordValidator} = require("../validators
 const { runValidation } = require('../validators');
 const { userSignupValidator, userSigninValidator } = require('../validators/auth');
 
-router.post('/pre-signup', userSignupValidator, runValidation, preSignup);
+router.post('/api/pre-signup', userSignupValidator, runValidation, preSignup);
 router.post('/signup', signup);
 router.post('/signin', userSigninValidator, runValidation, signin);
 router.get('/signout', signout);

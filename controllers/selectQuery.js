@@ -45,23 +45,19 @@ exports.createWriterPick = (req, res) => {
 };
 
 exports.selectedWriter = (req, res) => {
-  WriterPick.find({}, { array: 1 }).exec((err, data) => {
-    if (err) {
-        
+  WriterPick.find()
+  .exec((err, data) => {
+    if (err || !data) {
+      console.log(data)
       return res.status(400).json({
         error: errorHandler(err),
       });
-    }else{
-        // console.log(data)
-        if (data) {
-            res.json(data);
-          } else {
-            res.json("");
-          }
+    } else {
+      res.json(data);
     }
-   
-  });
-};
+})
+}
+
 
 // Writers Populars
 
@@ -159,16 +155,18 @@ exports.createEditorsPicks = (req, res) => {
     });
   });
 };
+
 exports.listEditorsPicks = (req, res) => {
-  EditorsPicksBlogs.find({})
+  EditorsPicksBlogs.find()
     .populate("postedBy", "_id name username")
     .exec((err, data) => {
       if (err) {
         return res.status(400).json({
           error: errorHandler(err),
         });
+      } else {
+        res.json(data);
       }
-
-      res.json(data);
+   
     });
 };

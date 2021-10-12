@@ -24,9 +24,9 @@ app.use(express.static(__dirname + '/public'));
 
 // db
 let productionOrDevelopment;
-if(process.env.NODE_ENV==="production"){
+if(process.env.NODE_ENV=="production"){
     productionOrDevelopment = process.env.DATABASE_CLOUD
-}else if(process.env.NODE_ENV==="development"){
+}else if(process.env.NODE_ENV=="development"){
     productionOrDevelopment = process.env.DATABASE_LOCAL
 }
 mongoose
@@ -35,6 +35,14 @@ mongoose
     .catch(err => {
         console.log(err);
     });
+
+    // mongoose
+    // .connect(process.env.DATABASE_LOCAL, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false })
+    // .then(() => console.log('DB connected'))
+    // .catch(err => {
+    //     console.log(err);
+    // });
+
 
 // middlewares
 app.use(morgan('dev'));
@@ -45,17 +53,17 @@ if (process.env.NODE_ENV === 'development') {
     app.use(cors({ origin: `${process.env.CLIENT_URL}` }));
 }
 // routes middleware
-app.use('/', blogRoutes);
-app.use('/', authRoutes);
-app.use('/', userRoutes);
-app.use('/', categoryRoutes);
-app.use('/', tagRoutes);
-app.use('/', tribeRoutes);
-app.use('/', formRoutes);
-app.use('/', trialRoutes);
-app.use('/', selectQuery)
-app.use('/', commentRoutes)
-app.use('/', replyRoutes)
+app.use('/api', blogRoutes);
+app.use('/api', authRoutes);
+app.use('/api', userRoutes);
+app.use('/api', categoryRoutes);
+app.use('/api', tagRoutes);
+app.use('/api', tribeRoutes);
+app.use('/api', formRoutes);
+app.use('/api', trialRoutes);
+app.use('/api', selectQuery)
+app.use('/api', commentRoutes)
+app.use('/api', replyRoutes)
 
 // port
 const port = process.env.PORT || 8020;

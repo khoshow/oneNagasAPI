@@ -210,7 +210,7 @@ exports.signup = (req, res) => {
 exports.signin = (req, res) => {
   const { email, password } = req.body;
   // check if user exist
-  User.findOne({ email }).exec((err, user) => {
+  User.findOne({ email:email }).exec((err, user) => {
     if (err || !user) {
       return res.status(400).json({
         error: "User with that email does not exist. Please signup.",
@@ -229,9 +229,11 @@ exports.signin = (req, res) => {
 
     res.cookie("token", token, { expiresIn: "1d" });
     const { _id, username, name, email, role } = user;
-    return res.json({
+    
+    return res.json({     
       token,
       user: { _id, username, name, email, role },
+      
     });
   });
 };
