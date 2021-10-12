@@ -102,7 +102,7 @@ exports.preSignup = (req, res) => {
       subject: `Account activation link`,
       html: `
     <p>Please use the following link to activate your acccount:</p>
-    <a href={${process.env.CLIENT_URL}/auth/account/activate/${token}}>${process.env.CLIENT_URL}/auth/account/activate/${token}</a>
+    <a href={${process.env.CLIENT_URL}/auth/account/activate/${token}}><p>${process.env.CLIENT_URL}/auth/account/activate/${token}</p></a>
     <hr />
     <p>This email may contain sensitive information<p>
     <p>https://nagamei.com</p>
@@ -210,7 +210,7 @@ exports.signup = (req, res) => {
 exports.signin = (req, res) => {
   const { email, password } = req.body;
   // check if user exist
-  User.findOne({ email:email }).exec((err, user) => {
+  User.findOne({ email: email }).exec((err, user) => {
     if (err || !user) {
       return res.status(400).json({
         error: "User with that email does not exist. Please signup.",
@@ -229,11 +229,10 @@ exports.signin = (req, res) => {
 
     res.cookie("token", token, { expiresIn: "1d" });
     const { _id, username, name, email, role } = user;
-    
-    return res.json({     
+
+    return res.json({
       token,
       user: { _id, username, name, email, role },
-      
     });
   });
 };
