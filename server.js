@@ -29,9 +29,10 @@ if(process.env.NODE_ENV=="production"){
 }else if(process.env.NODE_ENV=="development"){
     productionOrDevelopment = process.env.DATABASE_LOCAL
 }
+
 mongoose
     .connect(productionOrDevelopment)
-    .then(() => console.log('DB connected'))
+    .then(() => console.log("DB: "+productionOrDevelopment))
     .catch(err => {
         console.log(err);
     });
