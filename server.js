@@ -19,36 +19,20 @@ const commentRoutes = require("./routes/comment");
 const replyRoutes = require("./routes/replies");
 // app
 const app = express();
-
-// middleware that modify the response body
-// var doesModifyBody = function(req, res, next) {
-//     res.header("Access-Control-Allow-Origin", "https://nagamei.com");
-//     res.header("Access-Control-Allow-Credentials", "true");
-//     res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
-//     res.header(
-//       "Access-Control-Allow-Headers",
-//       "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-//     );
-//     res.end();
-//     // doesn't call next()
-//   };
-  
-
-//   app.use(doesModifyBody);
-
+app.use(cors({ origin: 'https://nagamei.com' }));
 
 app.use(express.static(__dirname + "/public"));
 
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
+// app.use(function (req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
 
-  res.setHeader("Access-Control-Allow-Methods", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );  
-  next();
-});
+//   res.setHeader("Access-Control-Allow-Methods", "*");
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+//   );  
+//   next();
+// });
 
 // db
 let productionOrDevelopment;
