@@ -19,7 +19,7 @@ const commentRoutes = require("./routes/comment");
 const replyRoutes = require("./routes/replies");
 // app
 const app = express();
-app.use(cors({ origin: 'https://nagamei.com' }));
+
 
 app.use(express.static(__dirname + "/public"));
 
@@ -60,8 +60,12 @@ mongoose
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(cookieParser());
+
 // cors
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV === "production") {
+  app.use(cors({ origin: 'https://nagamei.com' }));
+ 
+}else{
   app.use(cors({ origin: `${process.env.CLIENT_URL}` }));
 }
 // routes middleware
