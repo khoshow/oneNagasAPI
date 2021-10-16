@@ -23,7 +23,9 @@ exports.publicProfile = (req, res) => {
         return res.status(400).json({
           error: "User not found",
         });
+       
       }
+      // console.log("From back: "+userFromDB)
       user = userFromDB;
       let userId = user._id;
       Blog.find({ postedBy: userId })
@@ -31,10 +33,10 @@ exports.publicProfile = (req, res) => {
         .populate("tags", "_id name slug")
         .populate("postedBy", "_id name")
         .populate("follows", "_id name username")
-        .populate("followers", "_id name username")
+        // .populate("followers", "_id name username")
         .limit(10)
         .select(
-          "_id title slug excerpt categories tags postedBy createdAt updatedAt follows followers"
+          "_id title slug excerpt categories tags postedBy createdAt updatedAt"
         )
         .exec((err, data) => {
           if (err) {
@@ -44,8 +46,10 @@ exports.publicProfile = (req, res) => {
           }
           user.photo = undefined;
           user.hashed_password = undefined;
+        
           res.json({
-            user,
+           
+            userFromDB,
             blogs: data,
           });
         });
@@ -124,8 +128,8 @@ exports.follows = (req, res) => {
   // const follower = req.body.follower
   const follows = req.body.follows;
 
-  console.log("from back follower: " + req.profile._id);
-  console.log("from back follows: " + follows);
+  // console.log("from back follower: " + req.profile._id);
+  // console.log("from back follows: " + follows);
 
   User.findByIdAndUpdate(
     { _id: follows },
@@ -163,8 +167,8 @@ exports.unFollow = (req, res) => {
   // const follower = req.body.follower
   const unfollow = req.body.unfollow;
 
-  console.log("from back follower: " + req.profile._id);
-  console.log("from back follows: " + unfollow);
+  // console.log("from back follower: " + req.profile._id);
+  // console.log("from back follows: " + unfollow);
 
   User.findByIdAndUpdate(
     { _id: unfollow },

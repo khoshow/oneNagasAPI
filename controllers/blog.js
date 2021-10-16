@@ -205,6 +205,8 @@ exports.listAllBlogsCategoriesTags = (req, res) => {
     });
 };
 
+
+
 exports.read = (req, res) => {
   const slug = req.params.slug.toLowerCase();
   Blog.findOne({ slug })
@@ -212,7 +214,7 @@ exports.read = (req, res) => {
     .populate("categories", "_id name slug")
     .populate("tags", "_id name slug")
     .populate("tribes", "_id name slug")
-    .populate("postedBy", "_id name username about")
+    .populate("postedBy", "_id name username about follows followers")
     .populate("likes", "_id name username")
     .select(
       "_id title body slug mtitle mdesc categories tags tribes caption likes postedBy createdAt updatedAt"
@@ -280,7 +282,8 @@ exports.update = (req, res) => {
         oldBlog.tags = tags.split(",");
       }
 
-      if (files.photo) {
+      if (files.photo) 
+      {
         if (files.photo.size > 10000000) {
           return res.status(400).json({
             error: "Image should be less then 1mb in size",
@@ -313,7 +316,7 @@ exports.photo = (req, res) => {
           error: errorHandler(err),
         });
       }
-      res.set("Content-Type", blog.photo.contentType);
+      // res.set("Content-Type", blog.photo.contentType);
       return res.send(blog.photo.data);
     });
 };
@@ -386,7 +389,7 @@ exports.listByUser = (req, res) => {
 
 exports.likeBlog = (req, res) => {
   const myId = req.body.blogId;
-  console.log("from back: " + myId);
+  // console.log("from back: " + myId);
   Blog.findByIdAndUpdate(
     { _id: myId },
     {
@@ -406,7 +409,7 @@ exports.likeBlog = (req, res) => {
 
 exports.unlikeBlog = (req, res) => {
   const myId = req.body.blogId;
-  console.log("from back: " + myId);
+  // console.log("from back: " + myId);
   Blog.findByIdAndUpdate(
     { _id: myId },
     {

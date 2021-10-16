@@ -12,10 +12,10 @@ const { smartTrim } = require('../helpers/blog');
 
 
 exports.postComment = (req, res) => {
-    console.log("Blog Id from back: " + req.body.blogId);
-    console.log("Content from back: " + req.body.comment);
+    // console.log("Blog Id from back: " + req.body.blogId);
+    // console.log("Content from back: " + req.body.comment);
     const blogId = req.body.blogId
-    console.log("bg:" + blogId);
+    // console.log("bg:" + blogId);
     Comment.findOne({ blogId: blogId }).exec((err, data) => {
         if (data) {
             Comment.findOneAndUpdate({ blogId: blogId }, {
@@ -198,7 +198,7 @@ exports.getComments = (req, res) => {
                     error: errorHandler(err)
                 });
             }
-            console.log("From back: " + data);
+            // console.log("From back: " + data);
             res.json(data);
         });
 }
@@ -219,8 +219,8 @@ exports.getComments = (req, res) => {
 // { arrayFilters: [{ "elem._id": commentId }] })
 
 exports.editComment = (req, res) => {
-    console.log("Blog Id from back: " + req.body.blogId);
-    console.log("Content from back: " + req.body.comment);
+    // console.log("Blog Id from back: " + req.body.blogId);
+    // console.log("Content from back: " + req.body.comment);
     const blogId = req.body.blogId
     const commentId = req.body.commentId
     console.log("bg:" + blogId);
