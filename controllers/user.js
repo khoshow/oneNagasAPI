@@ -10,51 +10,89 @@ exports.read = (req, res) => {
   return res.json(req.profile);
 };
 
+
 exports.publicProfile = (req, res) => {
   let username = req.params.username;
   let user;
   let blogs;
 
-  User.findOne({ username })
-    .populate("follows", "_id name username")
-    .populate("followers", "_id name username")
-    .exec((err, userFromDB) => {
+  User.findOne({ username }).exec((err, userFromDB) => {
       if (err || !userFromDB) {
-        return res.status(400).json({
-          error: "User not found",
-        });
-       
+          return res.status(400).json({
+              error: 'User not found'
+          });
       }
-      // console.log("From back: "+userFromDB)
       user = userFromDB;
       let userId = user._id;
       Blog.find({ postedBy: userId })
-        .populate("categories", "_id name slug")
-        .populate("tags", "_id name slug")
-        .populate("postedBy", "_id name")
-        .populate("follows", "_id name username")
-        // .populate("followers", "_id name username")
-        .limit(10)
-        .select(
-          "_id title slug excerpt categories tags postedBy createdAt updatedAt"
-        )
-        .exec((err, data) => {
-          if (err) {
-            return res.status(400).json({
-              error: errorHandler(err),
-            });
-          }
-          user.photo = undefined;
-          user.hashed_password = undefined;
-        
-          res.json({
-           
-            userFromDB,
-            blogs: data,
+          .populate('categories', '_id name slug')
+          .populate('tags', '_id name slug')
+          .populate('postedBy', '_id name')
+          .limit(10)
+          .select('_id title slug excerpt categories tags postedBy createdAt updatedAt')
+          .exec((err, data) => {
+              if (err) {
+                  return res.status(400).json({
+                      error: errorHandler(err)
+                  });
+              }
+              user.photo = undefined;
+              user.hashed_password = undefined;
+              res.json({
+                  user,
+                  blogs: data
+              });
           });
-        });
-    });
+  });
 };
+
+
+
+
+// exports.publicProfile = (req, res) => {
+//   let username = req.params.username;
+//   let user;
+//   let blogs;
+
+//   User.findOne({ username })
+//     .populate("follows", "_id name username")
+//     .populate("followers", "_id name username")
+//     .exec((err, userFromDB) => {
+//       if (err || !userFromDB) {
+//         return res.status(400).json({
+//           error: "User not found",
+//         });
+       
+//       }
+//       // console.log("From back: "+userFromDB)
+//       user = userFromDB;
+//       let userId = user._id;
+//       Blog.find({ postedBy: userId })
+//         .populate("categories", "_id name slug")
+//         .populate("tags", "_id name slug")
+//         .populate("postedBy", "_id name username")
+//         .populate("follows", "_id name username")
+//         // .populate("followers", "_id name username")
+//         .limit(10)
+//         .select(
+//           "_id title slug excerpt categories tags postedBy createdAt updatedAt"
+//         )
+//         .exec((err, data) => {
+//           if (err) {
+//             return res.status(400).json({
+//               error: errorHandler(err),
+//             });
+//           }
+//           user.photo = undefined;
+//           user.hashed_password = undefined;
+        
+//           res.json({           
+//             user: userFromDB,
+//             blogs: data,
+//           });
+//         });
+//     });
+// };
 
 exports.update = (req, res) => {
   let form = new formidable.IncomingForm();
