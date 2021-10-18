@@ -12,73 +12,6 @@ const { OAuth2Client } = require("google-auth-library");
 const sgMail = require("@sendgrid/mail"); // SENDGRID_API_KEY
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-// const myProfilePhoto =()=>{
-//     return new Promise((resolve, reject)=>{
-//         setTimeout(()=>{
-//             User.findOne({ email: "khosh24@g.com" }).exec((err, data) => {
-//                 photoProfile = data.photo;
-//                 resolve(photoProfile)
-//                console.log("Profile: " + photoProfile);
-//          })
-//         }, 2000)
-//     })
-// }
-
-// const callMe = async ()=>{
-//     let valTwo = await myProfilePhoto()
-//     console.log("From inside: "+valTwo);
-//     return
-// }
-
-// let da = callMe()
-// console.log("from Out" + da);
-
-// async function myProfilePhoto() {
-//   var data;
-//   await User.findOne({ email: "khosh24@g.com" }).then(function (response) {
-//     data = response.photo;
-//   });
-//   return data;
-// }
-
-//   function myProfilePhoto() {
-//     var data;
-//     // Or $.get(...).then, or request(...).then, or query(...).then
-//     User.findOne({ email: "khosh24@g.com" }).then(function(response){
-//         data = response
-//     });
-//     return data;
-// }
-
-// var result = foo();
-
-//   (async function myProfilePhoto(){
-
-//     await User.findOne({ email: "khosh24@g.com" }).exec((err, data) => {
-//         var photoProfile = data.photo;
-//         return photoProfile
-//     })
-
-// })()
-
-//   async function foo(){
-//     var data = await fetch("/echo/json"); // Notice the await
-//     // code here only executes _after_ the request is done
-//     return data.json(); // 'data' is defined
-// }
-
-// const myProfilePhoto = () => {
-//   var photoProfile;
-//   setTimeout(function () {
-//     User.findOne({ email: "khosh24@g.com" }).exec((err, data) => {
-//       photoProfile = data.photo;
-//       console.log("Profile: " + photoProfile);
-
-//     });
-//   }, 1000);
-
-//   return photoProfile
-// };
 
 exports.preSignup = (req, res) => {
   const { name, email, password } = req.body;
@@ -322,8 +255,8 @@ exports.forgotPassword = (req, res) => {
                 <p>Please use the following link to reset your password:</p>
                 <p>${process.env.CLIENT_URL}/auth/password/reset/${token}</p>
                 <hr />
-                <p>This email may contain sensetive information</p>
-                <p>https://seoblog.com</p>
+                <p>This email may contain sensitive information</p>
+                <p>https://nagamei.com</p>
           `,
     };
 
@@ -362,7 +295,7 @@ exports.resetPassword = (req, res) => {
         User.findOne({ resetPasswordLink }, (err, user) => {
           if (err || !user) {
             return res.status(401).json({
-              error: "SOmething went wrong. Please try again",
+              error: "Something went wrong. Please try again",
             });
           }
           const updatedFields = {
