@@ -3,7 +3,7 @@ const Blog = require("../models/blog");
 const slugify = require("slugify");
 const formidable = require("formidable");
 const fs = require("fs");
-const _ = require('lodash');
+const _ = require("lodash");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
 exports.create = (req, res) => {
@@ -106,7 +106,7 @@ exports.read = (req, res) => {
       });
     }
     Blog.find({ categories: category })
-    .populate("tribes", "_id name slug")
+      .populate("tribes", "_id name slug")
       .populate("categories", "_id name slug")
       .populate("tags", "_id name slug")
       .populate("postedBy", "_id name")
@@ -139,6 +139,61 @@ exports.remove = (req, res) => {
   });
 };
 
+// exports.update = (req, res) => {
+//   const slug = req.params.slug.toLowerCase();
+
+//   Category.findOne({ slug }).exec((err, oldCategory) => {
+//     if (err) {
+//       return res.status(400).json({
+//         error: errorHandler(err),
+//       });
+//     }
+//     let form = new formidable.IncomingForm();
+//     form.keepExtensions = true;
+
+//     form.parse(req, (err, fields, files) => {
+//       if (err) {
+//         return res.status(400).json({
+//           error: "Image could not upload",
+//         });
+//       }
+
+//       let slugBeforeMerge = oldCategory.slug;
+//       oldCategory = _.merge(oldCategory, fields);
+//       oldCategory.slug = slugBeforeMerge;
+
+//       const { name } = fields;
+
+//       if (name) {
+//         console.log("Name oif Cat: "+ name);
+//         oldCategory.name = name
+
+//       }
+
+//       if (files.photo) {
+//         if (files.photo.size > 10000000) {
+//           return res.status(400).json({
+//             error: "Image should be less then 1mb in size",
+//           });
+//         }
+//         oldCategory.photo.data = fs.readFileSync(files.photo.path);
+//         oldCategory.photo.contentType = files.photo.type;
+//       }
+
+//       oldCategory.save((err, result) => {
+//         if (err) {
+//           return res.status(400).json({
+//             error: errorHandler(err),
+//           });
+//         }
+//         // result.photo = undefined;
+
+//         res.json(result);
+//       });
+//     });
+//   });
+// };
+
 exports.update = (req, res) => {
   const slug = req.params.slug.toLowerCase();
   Category.findOne({ slug }).exec((err, oldCategory) => {
@@ -147,40 +202,58 @@ exports.update = (req, res) => {
         error: errorHandler(err),
       });
     }
+
     let form = new formidable.IncomingForm();
     form.keepExtensions = true;
-
     form.parse(req, (err, fields, files) => {
       if (err) {
         return res.status(400).json({
-          error: "Image could not upload",
+          error: "Could not  upload image",
         });
       }
 
+      const { name } = fields;
+
+      if (!name || !name.length) {
+        return res.status(400).json({
+          error: "Name is required",
+        });
+      }
+     
       let slugBeforeMerge = oldCategory.slug;
-      oldCategory = _.merge(oldCategory, fields);
-      oldCategory.slug = slugBeforeMerge;
+            oldCategory = _.merge(oldCategory, fields);
+            oldCategory.slug = slugBeforeMerge;
 
-      // const { body, name } = fields;
 
+
+
+
+      // let category = new Category();
+      // category.name = name;
+      // category.slug = slug;
       if (files.photo) {
         if (files.photo.size > 10000000) {
           return res.status(400).json({
             error: "Image should be less then 1mb in size",
           });
+        } else {
+          oldCategory.photo.data = fs.readFileSync(files.photo.path);
+          oldCategory.photo.contentType = files.photo.type;
         }
-        oldCategory.photo.data = fs.readFileSync(files.photo.path);
-        oldCategory.photo.contentType = files.photo.type;
+      } else if (!files.photo) {
+        return res.status(400).json({
+          error: "An Image is required",
+        });
       }
 
-      oldCategory.save((err, result) => {
+      oldCategory.save((err, data) => {
         if (err) {
+          console.log(err);
           return res.status(400).json({
             error: errorHandler(err),
           });
         }
-        // result.photo = undefined;
-        res.json(result);
+        res.json(data); // dont do this res.json({ category: data });
       });
     });
   });

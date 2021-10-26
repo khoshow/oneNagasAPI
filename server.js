@@ -62,12 +62,18 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 // cors
-if (process.env.NODE_ENV === "production") {
-  app.use(cors({ origin: 'https://nagamei.com' }));
+// if (process.env.NODE_ENV === "production") {
+//   app.use(cors({ origin: 'https://nagamei.com' }));
  
-}else{
-  app.use(cors({ origin: `${process.env.CLIENT_URL}` }));
-}
+// }else if(process.env.NODE_ENV === "development"){
+  
+//   app.use(cors({ origin: `${process.env.CLIENT_URL}` }));
+
+// }
+app.use(cors({ "origin": "*",
+"methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+"preflightContinue": false,
+"optionsSuccessStatus": 204}));
 // routes middleware
 app.use("/api", blogRoutes);
 app.use("/api", authRoutes);

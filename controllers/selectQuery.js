@@ -58,6 +58,22 @@ exports.selectedWriter = (req, res) => {
 })
 }
 
+//Remove selected Writer
+
+exports.deselectWriterPick = (req, res) => {
+  const slug = req.params.selectedWriter.toLowerCase();
+  WriterPick.findOneAndRemove({ username:slug }).exec((err, data) => {
+    if (err) {
+      return res.json({
+        error: errorHandler(err),
+      });
+    }
+    res.json({
+      message: "Unselected successfully",
+    });
+  });
+};
+
 
 // Writers Populars
 
@@ -169,4 +185,20 @@ exports.listEditorsPicks = (req, res) => {
       }
    
     });
+};
+
+
+//Unselect Editors Picks
+exports.deselectEditorsPicks = (req, res) => {
+  const slug = req.params.slug.toLowerCase();
+  EditorsPicksBlogs.findOneAndRemove({ slug }).exec((err, data) => {
+    if (err) {
+      return res.json({
+        error: errorHandler(err),
+      });
+    }
+    res.json({
+      message: "Unselected successfully",
+    });
+  });
 };
