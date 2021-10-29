@@ -324,7 +324,7 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 exports.googleLogin = (req, res) => {
   const idToken = req.body.tokenId;
-
+console.log("Token: "+ idToken);
   client
     .verifyIdToken({ idToken, audience: process.env.GOOGLE_CLIENT_ID })
     .then((response) => {
