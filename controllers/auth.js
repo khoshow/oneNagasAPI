@@ -32,10 +32,10 @@ exports.preSignup = (req, res) => {
     const emailData = {
       from: process.env.EMAIL_FROM,
       to: email,
-      subject: `Account activation link`,
+      subject: `Nagamei account activation link`,
       html: `
     <p>Please use the following link to activate your acccount:</p>
-    <a href={${process.env.CLIENT_URL}/auth/account/activate/${token}}>${process.env.CLIENT_URL}/auth/account/activate/${token}</a>
+    <a href='${process.env.CLIENT_URL}/auth/account/activate/${token}>'</a>
     <hr />
     <p>This email may contain sensitive information<p>
     <p>https://nagamei.com</p>
@@ -105,8 +105,8 @@ exports.signup = (req, res) => {
               });
             }
             const { photo } = tempPhoto;
-            console.log("BCK: " + photo);
-            console.log("BCKTem: " + tempPhoto);
+            // console.log("BCK: " + photo);
+            // console.log("BCKTem: " + tempPhoto);
             const { name, email, password } = jwt.decode(token);
             let username = shortId.generate();
             // let photo = myProfilePhoto();
