@@ -35,7 +35,8 @@ exports.preSignup = (req, res) => {
       subject: `Nagamei account activation link`,
       html: `
     <p>Please use the following link to activate your acccount:</p>
-    <a href='${process.env.CLIENT_URL}/auth/account/activate/${token}>'</a>
+    <a ></a>
+    <a href="${process.env.CLIENT_URL}/auth/account/activate/${token}">${process.env.CLIENT_URL}/auth/account/activate/${token}</a>
     <hr />
     <p>This email may contain sensitive information<p>
     <p>https://nagamei.com</p>
